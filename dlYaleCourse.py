@@ -20,7 +20,6 @@ def readPage(domain, pageURL, headers=None):
     return page
 
 course = readPage(oyc, sessions_page)
-# course = readPage(oyc, '/economics/econ-252-08#sessions')
 lectureURLs = re.findall("href=\"(.*lecture.*)\"", course)
 
 for lectureURL in lectureURLs:
