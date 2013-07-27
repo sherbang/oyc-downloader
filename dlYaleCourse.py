@@ -25,12 +25,16 @@ lectureURLs = re.findall("href=\"(.*lecture.*)\"", course)
 
 for lectureURL in lectureURLs:
     lecture = readPage(oyc, lectureURL)
-    mp3URLs = re.findall("href=\"(.*mp3)\"", lecture)
+    mp3URLs = re.findall("href=\"([^\"]*?mp3)\"", lecture)
     for mp3FullURL in mp3URLs:
-        m = re.match(".*file=.*/(.*\.mp3)", mp3FullURL)
+        print mp3FullURL
+        if(re.match(".*yale\.edu.*", mp3FullURL) == None):
+            print "Not downloading"
+            continue
+        m = re.match(".*file=.*/(.*?\.mp3)", mp3FullURL)
         mp3FileName =  m.group(1)
         
-        m = re.match(".*yale.edu(/.*\.mp3)", mp3FullURL)
+        m = re.match(".*yale.edu(/.*?\.mp3)", mp3FullURL)
         mp3URL =  m.group(1)
         print "reading %s" % mp3URL
         headers = {'Referer':"http://" + oyc + lectureURL}
