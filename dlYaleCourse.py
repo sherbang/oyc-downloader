@@ -11,7 +11,12 @@ def get_mp3_url(lecture_url):
     browser = RoboBrowser()
     browser.open(lecture_url)
 
-    return browser.get_link(href=re.compile('\\.mp3$'))['href']
+    link = browser.get_link(href=re.compile('\\.mp3$'))
+
+    if link is not None:
+        return link['href']
+    else:
+        return None
 
 
 if __name__ == '__main__':
@@ -36,6 +41,10 @@ if __name__ == '__main__':
         lecture_url = urljoin(sessions_page, lecture_url)
 
         mp3_url = get_mp3_url(lecture_url)
+
+        if not mp3_url:
+            print('No .mp3 at {}'.format(lecture_url))
+            continue
 
         try:
             filename = download_file(mp3_url, output_dir=download_folder)
