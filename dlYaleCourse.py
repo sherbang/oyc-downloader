@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os
 import re
 import sys
 from robobrowser import RoboBrowser
@@ -16,6 +17,14 @@ def get_mp3_url(lecture_url):
 if __name__ == '__main__':
     sessions_page = sys.argv[1]
 
+    if len(sys.argv) > 1:
+        download_folder = sys.argv[2]
+
+        if not os.path.exists(download_folder):
+            os.mkdir(download_folder)
+    else:
+        download_folder = None
+
     browser = RoboBrowser()
     browser.open(sessions_page)
 
@@ -29,7 +38,7 @@ if __name__ == '__main__':
         mp3_url = get_mp3_url(lecture_url)
 
         try:
-            filename = download_file(mp3_url)
+            filename = download_file(mp3_url, output_dir=download_folder)
             print('Downloaded {}'.format(filename))
         except FileExistsException as exc:
             filename = exc.filename
